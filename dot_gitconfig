@@ -1,0 +1,34 @@
+[user]
+  name = Philippe Vaucher
+  email = philippe.vaucher@gmail.com
+[core]
+  editor = vim
+  autocrlf = input
+  eol = lf
+[color]
+  ui = true
+[log]
+  decorate = short
+[alias]
+  st = status
+  ci = commit
+  br = branch
+  co = checkout
+  df = diff
+  l = log --oneline
+  lgst = log --stat=,999 --oneline
+  tree = log --all --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --date=short
+  modified = !git status -s | grep M | awk '{print $2}'
+  conflicts = !git status -s | grep UU | awk '{print $2}'
+  autosquash = !GIT_EDITOR=cat git rebase -i --autosquash
+  graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
+  free = "!f() { TMPDIR=$(mktemp -d gitfreeXXX); git clone file://. $TMPDIR >/dev/null 2>&1; A=$(du -s .git | awk '{print $1}'); B=$(du -s $TMPDIR/.git | awk '{print $1}'); rm -rf $TMPDIR; echo before: $A; echo after: $B; echo diff: $((A - B)); }; f"
+  free-aggro = "!f() { TMPDIR=$(mktemp -d gitfreeXXX); git clone file://. $TMPDIR; A=$(du -s .git | awk '{print $1}'); cd $TMPDIR; git gc --aggressive; cd ..; B=$(du -s $TMPDIR/.git | awk '{print $1}'); rm -rf $TMPDIR; echo before: $A; echo after: $B; echo diff: $((A - B)); }; f"
+[push]
+  default = upstream
+[sendemail]
+  smtpuser = philippe.vaucher@gmail.com
+  smtpserver = smtp.googlemail.com
+  smtpencryption = tls
+  smtpserverport = 587
+  suppresscc = self

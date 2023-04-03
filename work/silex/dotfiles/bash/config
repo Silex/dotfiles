@@ -1,0 +1,40 @@
+# Better-looking less for binary files
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# Bash completion
+[ -f /etc/bash_completion ] && . /etc/bash_completion
+
+# Disable CTRL-S and CTRL-Q
+[[ $- =~ i ]] && stty -ixoff -ixon
+
+# Enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# Aliases
+alias l="ls -alh"
+
+# History
+HISTCONTROL=ignoredups:erasedups
+HISTSIZE=-1
+HISTFILESIZE=-1
+HISTTIMEFORMAT='%F %T '
+PROMPT_COMMAND='history -a; history -c; history -r'
+shopt -s histappend
+shopt -s checkwinsize
+shopt -s cmdhist
+
+# Prompt
+PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+
+# WSL
+if [[ $(grep -i microsoft /proc/version) ]]; then
+  eval $($HOME/wsl2-ssh-agent)
+fi
+
+PATH=$PATH:$HOME/bin
